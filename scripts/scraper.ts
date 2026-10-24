@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import type { Product } from '../src/types.ts'
+import { writeFile } from 'node:fs/promises'
 
 const url = 'https://pc.liquid.by/'; 
 const className = '.node.widget-element.widget.css47';
@@ -29,7 +30,9 @@ export async function scrape() {
         products.push({id, name: t, shopUrl: url, className: className, price: p})
     })
 
-    console.log(products)
+    
+    const json = JSON.stringify(products, null, 2);
+    await writeFile('data/products.json', json, 'utf-8');
 }
 
 scrape();
